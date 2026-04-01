@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <SpaceGame />
+    <TowerDefense />
   </div>
 </template>
 
 <script>
-import SpaceGame from './components/SpaceGame.vue'
+import TowerDefense from './components/TowerDefense.vue'
 
 export default {
   name: 'App',
   components: {
-    SpaceGame
+    TowerDefense
   }
 }
 </script>
