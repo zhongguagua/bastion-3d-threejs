@@ -199,10 +199,14 @@ export const COLOR = {
   HP_BAR_BORDER: 0x111111,
 
   // Environment
-  SKY: 0x0a1520,
-  FOG: 0x0a1520,
+  SKY: 0x0f1e2e,
+  FOG: 0x0f1e2e,
   AMBIENT_GROUND: 0x112211,
   AMBIENT_SKY: 0x0a1020,
+  ENV_GROUND: 0x1e3a25,
+  HILL_COLOR: 0x1a3318,
+  HILL_COLOR_FAR: 0x163016,
+  PARTICLE_COLOR: 0x66ffaa,
 
   // Tower base material
   TOWER_BASE: 0x555550,

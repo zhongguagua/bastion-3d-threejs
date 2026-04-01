@@ -69,9 +69,6 @@ export default class GameEngine {
 
     this._setupInputHandlers()
     this._setupEventHandlers()
-
-    // Initial render
-    this.renderer.render()
   }
 
   _setupInputHandlers() {
@@ -151,6 +148,9 @@ export default class GameEngine {
       cancelAnimationFrame(this.animationId)
       this.animationId = null
     }
+    // Re-enable idle render loop for background animation while paused
+    this.renderer._idleRenderActive = true
+    this.renderer._idleRender()
     this._notifyStateChange()
   }
 
@@ -314,6 +314,9 @@ export default class GameEngine {
     // Update map animations
     this.gameMap.update(dt)
 
+    // Update atmosphere (floating particles, etc.)
+    this.renderer.updateAtmosphere(dt)
+
     // Spawn enemies from wave manager
     this.waveManager.update(dt)
 
@@ -453,7 +456,9 @@ export default class GameEngine {
       this.animationId = null
     }
     this._notifyStateChange()
-    this.renderer.render()
+    // Re-enable idle render loop for background animation on game over screen
+    this.renderer._idleRenderActive = true
+    this.renderer._idleRender()
   }
 
   _victory() {
@@ -463,7 +468,9 @@ export default class GameEngine {
       this.animationId = null
     }
     this._notifyStateChange()
-    this.renderer.render()
+    // Re-enable idle render loop for background animation on victory screen
+    this.renderer._idleRenderActive = true
+    this.renderer._idleRender()
   }
 
   // ========== Start Next Wave ==========

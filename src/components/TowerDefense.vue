@@ -106,8 +106,6 @@ export default {
       this.game.onScoreChange = (score) => { this.score = score }
       this.game.onWaveChange = (info) => { this.waveInfo = info }
       this.game.onTowerSelect = (tower) => { this.selectedTower = tower }
-
-      this.game.renderer.render()
     },
 
     startGame() {
