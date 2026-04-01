@@ -56,7 +56,8 @@ export const TOWER_STATS = {
     damage: [8, 15, 25],
     range: [5, 6, 7],
     fireRate: [0.4, 0.35, 0.3],
-    color: [0x44aa44, 0x55cc55, 0x66ee66],
+    color: [0x33cc66, 0x44dd77, 0x55ee88],
+    emissive: [0x0a3318, 0x0d4420, 0x115528],
     projectileSpeed: 25,
   },
   [TOWER.TYPES.CANNON]: {
@@ -66,7 +67,8 @@ export const TOWER_STATS = {
     damage: [25, 45, 70],
     range: [5, 5.5, 6],
     fireRate: [1.5, 1.3, 1.0],
-    color: [0xcc6633, 0xdd7744, 0xee8855],
+    color: [0xdd7733, 0xee8844, 0xff9955],
+    emissive: [0x331a0a, 0x442200, 0x553300],
     projectileSpeed: 12,
     splashRadius: [2, 2.5, 3],
   },
@@ -77,7 +79,8 @@ export const TOWER_STATS = {
     damage: [5, 8, 12],
     range: [5, 6, 7],
     fireRate: [0.8, 0.7, 0.6],
-    color: [0x4488cc, 0x55aadd, 0x66ccee],
+    color: [0x44bbee, 0x55ccff, 0x66ddff],
+    emissive: [0x0a2233, 0x0d3344, 0x114455],
     projectileSpeed: 18,
     slowFactor: [0.5, 0.4, 0.3],
     slowDuration: [2, 2.5, 3],
@@ -89,7 +92,8 @@ export const TOWER_STATS = {
     damage: [15, 25, 40],
     range: [6, 6.5, 7],
     fireRate: [1.2, 1.0, 0.8],
-    color: [0xaaaa44, 0xcccc55, 0xeeee66],
+    color: [0xcccc33, 0xdddd44, 0xeeee55],
+    emissive: [0x33330a, 0x44440d, 0x555511],
     chainCount: [2, 3, 4],
     chainDamageFactor: 0.7,
   },
@@ -100,7 +104,8 @@ export const TOWER_STATS = {
     damage: [50, 90, 150],
     range: [10, 12, 14],
     fireRate: [2.5, 2.2, 1.8],
-    color: [0x884488, 0x995599, 0xaa66aa],
+    color: [0xaa44aa, 0xbb55bb, 0xcc66cc],
+    emissive: [0x220a22, 0x330d33, 0x441144],
     projectileSpeed: 50,
   },
 }
@@ -122,7 +127,8 @@ export const ENEMY_STATS = {
     speed: 3,
     reward: 10,
     size: 0.4,
-    color: 0xcc3333,
+    color: 0xcc4444,
+    emissive: 0x441111,
     flying: false,
   },
   [ENEMY.TYPES.FAST]: {
@@ -132,6 +138,7 @@ export const ENEMY_STATS = {
     reward: 12,
     size: 0.3,
     color: 0xffaa33,
+    emissive: 0x442200,
     flying: false,
   },
   [ENEMY.TYPES.TANK]: {
@@ -140,7 +147,8 @@ export const ENEMY_STATS = {
     speed: 1.8,
     reward: 25,
     size: 0.6,
-    color: 0x885533,
+    color: 0x997744,
+    emissive: 0x221100,
     flying: false,
   },
   [ENEMY.TYPES.FLYING]: {
@@ -149,7 +157,8 @@ export const ENEMY_STATS = {
     speed: 4,
     reward: 15,
     size: 0.35,
-    color: 0x33aacc,
+    color: 0x44bbdd,
+    emissive: 0x0a2233,
     flying: true,
     flyHeight: 2,
   },
@@ -159,25 +168,47 @@ export const ENEMY_STATS = {
     speed: 1.5,
     reward: 100,
     size: 0.9,
-    color: 0x882222,
+    color: 0xaa2233,
+    emissive: 0x440011,
     flying: false,
   },
 }
 
 export const COLOR = {
-  GROUND: 0x2d5a1e,
-  PATH: 0x8b7355,
-  PATH_EDGE: 0x6b5335,
-  GRID_LINE: 0x3a6a2a,
+  // Terrain
+  GROUND: 0x2a4a28,
+  GROUND_DARK: 0x1e3a1c,
+  PATH: 0x6b5a48,
+  PATH_EDGE: 0x4a3a28,
+  PATH_CENTER: 0x7a6a55,
+  GRID_LINE: 0x3a5a32,
   GRID_HIGHLIGHT: 0x88ff88,
-  RANGE_CIRCLE: 0x44ff44,
+  RANGE_CIRCLE: 0x44ff88,
   RANGE_CIRCLE_INVALID: 0xff4444,
-  BASE: 0x4466aa,
-  SPAWN: 0xaa4444,
-  HP_BAR_BG: 0x333333,
-  HP_BAR_FG: 0x44cc44,
-  HP_BAR_LOW: 0xcc4444,
-  SKY: 0x1a2a3a,
+
+  // Markers
+  BASE: 0x4488cc,
+  BASE_EMISSIVE: 0x112244,
+  SPAWN: 0xcc4444,
+  SPAWN_EMISSIVE: 0x441111,
+
+  // HP Bar
+  HP_BAR_BG: 0x222222,
+  HP_BAR_FG: 0x33dd55,
+  HP_BAR_LOW: 0xdd3333,
+  HP_BAR_BORDER: 0x111111,
+
+  // Environment
+  SKY: 0x0a1520,
+  FOG: 0x0a1520,
+  AMBIENT_GROUND: 0x112211,
+  AMBIENT_SKY: 0x0a1020,
+
+  // Tower base material
+  TOWER_BASE: 0x555550,
+  TOWER_BASE_DARK: 0x3a3a38,
+  METAL_DARK: 0x333338,
+  METAL_LIGHT: 0x888890,
 }
 
 // Path waypoints in grid coordinates

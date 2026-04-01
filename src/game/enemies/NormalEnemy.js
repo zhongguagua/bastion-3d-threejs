@@ -21,7 +21,12 @@ export default class NormalEnemy extends Enemy {
 
     // Body - simple humanoid-like shape
     const bodyGeom = new THREE.BoxGeometry(0.5, 0.7, 0.4)
-    const bodyMat = new THREE.MeshPhongMaterial({ color: this.color, flatShading: true })
+    const bodyMat = new THREE.MeshStandardMaterial({
+      color: this.color,
+      emissive: this.emissive || 0x441111,
+      roughness: 0.6,
+      metalness: 0.2,
+    })
     const body = new THREE.Mesh(bodyGeom, bodyMat)
     body.position.y = 0.35
     body.castShadow = true
@@ -29,17 +34,37 @@ export default class NormalEnemy extends Enemy {
 
     // Head
     const headGeom = new THREE.SphereGeometry(0.2, 6, 4)
-    const headMat = new THREE.MeshPhongMaterial({ color: 0xddaa88, flatShading: true })
+    const headMat = new THREE.MeshStandardMaterial({
+      color: 0xddaa88,
+      roughness: 0.7,
+      metalness: 0.1,
+    })
     const head = new THREE.Mesh(headGeom, headMat)
     head.position.y = 0.85
     head.castShadow = true
     group.add(head)
 
+    // Glowing eyes
+    const eyeGeom = new THREE.SphereGeometry(0.05, 6, 4)
+    const eyeMat = new THREE.MeshBasicMaterial({ color: 0xff4444 })
+    const eyeL = new THREE.Mesh(eyeGeom, eyeMat)
+    eyeL.position.set(-0.08, 0.88, -0.18)
+    group.add(eyeL)
+
+    const eyeR = new THREE.Mesh(eyeGeom, eyeMat)
+    eyeR.position.set(0.08, 0.88, -0.18)
+    group.add(eyeR)
+
     // Shield
     const shieldGeom = new THREE.BoxGeometry(0.1, 0.5, 0.4)
-    const shieldMat = new THREE.MeshPhongMaterial({ color: 0x888844, flatShading: true })
+    const shieldMat = new THREE.MeshStandardMaterial({
+      color: 0x888844,
+      roughness: 0.5,
+      metalness: 0.3,
+    })
     const shield = new THREE.Mesh(shieldGeom, shieldMat)
     shield.position.set(0.35, 0.35, 0)
+    shield.castShadow = true
     group.add(shield)
 
     this.mesh = group

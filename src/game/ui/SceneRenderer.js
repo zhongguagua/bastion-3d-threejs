@@ -11,17 +11,20 @@ export default class SceneRenderer {
     this.scene = null
     this.camera = null
     this.renderer = null
+    this.clock = new THREE.Clock()
 
     this._initScene()
     this._initCamera()
     this._initRenderer()
     this._initLights()
+    this._initAtmosphere()
   }
 
   _initScene() {
     this.scene = new THREE.Scene()
     this.scene.background = new THREE.Color(COLOR.SKY)
-    this.scene.fog = new THREE.FogExp2(COLOR.SKY, 0.008)
+    // Linear fog for depth atmosphere
+    this.scene.fog = new THREE.Fog(COLOR.FOG, 30, 90)
   }
 
   _initCamera() {
@@ -37,36 +40,78 @@ export default class SceneRenderer {
   }
 
   _initRenderer() {
-    this.renderer = new THREE.WebGLRenderer({ antialias: true })
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      powerPreference: 'high-performance',
+    })
     this.renderer.setSize(this.container.clientWidth, this.container.clientHeight)
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+    // Tone mapping for richer colors and HDR-like look
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping
+    this.renderer.toneMappingExposure = 1.1
+
+    // Shadows
     this.renderer.shadowMap.enabled = true
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
+
     this.container.appendChild(this.renderer.domElement)
   }
 
   _initLights() {
-    // Ambient light
-    const ambient = new THREE.AmbientLight(0x6688aa, 0.6)
+    // Ambient light - subtle fill
+    const ambient = new THREE.AmbientLight(0x334455, 0.4)
     this.scene.add(ambient)
 
-    // Main directional light (sun)
-    const dirLight = new THREE.DirectionalLight(0xffeedd, 1.0)
-    dirLight.position.set(30, 40, 20)
+    // Main directional light (sun) - warm and angled for dramatic shadows
+    const dirLight = new THREE.DirectionalLight(0xffeedd, 1.2)
+    dirLight.position.set(25, 45, 15)
     dirLight.castShadow = true
     dirLight.shadow.mapSize.width = 2048
     dirLight.shadow.mapSize.height = 2048
     dirLight.shadow.camera.near = 1
-    dirLight.shadow.camera.far = 100
-    dirLight.shadow.camera.left = -40
-    dirLight.shadow.camera.right = 40
-    dirLight.shadow.camera.top = 40
-    dirLight.shadow.camera.bottom = -40
+    dirLight.shadow.camera.far = 120
+    dirLight.shadow.camera.left = -45
+    dirLight.shadow.camera.right = 45
+    dirLight.shadow.camera.top = 45
+    dirLight.shadow.camera.bottom = -45
+    dirLight.shadow.bias = -0.001
+    dirLight.shadow.normalBias = 0.02
     this.scene.add(dirLight)
 
-    // Hemisphere light for natural outdoor feel
-    const hemiLight = new THREE.HemisphereLight(0x88aacc, 0x445522, 0.4)
+    // Hemisphere light - sky/ground color blending
+    const hemiLight = new THREE.HemisphereLight(
+      0x6688aa,  // sky - cool blue
+      0x223311,  // ground - dark green
+      0.5
+    )
+    hemiLight.position.set(0, 30, 0)
     this.scene.add(hemiLight)
+
+    // Fill light from opposite side to reduce harsh shadows
+    const fillLight = new THREE.DirectionalLight(0x8899bb, 0.3)
+    fillLight.position.set(-20, 20, -10)
+    this.scene.add(fillLight)
+
+    // Rim light from behind for edge definition
+    const rimLight = new THREE.DirectionalLight(0xffeedd, 0.25)
+    rimLight.position.set(0, 10, -30)
+    this.scene.add(rimLight)
+  }
+
+  _initAtmosphere() {
+    // Ground-level ambient glow plane
+    const glowGeom = new THREE.PlaneGeometry(120, 120)
+    glowGeom.rotateX(-Math.PI / 2)
+    const glowMat = new THREE.MeshBasicMaterial({
+      color: 0x112211,
+      transparent: true,
+      opacity: 0.15,
+      side: THREE.DoubleSide,
+    })
+    const glowPlane = new THREE.Mesh(glowGeom, glowMat)
+    glowPlane.position.set(20, -0.5, 14)
+    this.scene.add(glowPlane)
   }
 
   render() {

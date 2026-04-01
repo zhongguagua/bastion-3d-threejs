@@ -3,7 +3,6 @@
 // ==========================================
 
 import * as THREE from 'three'
-import { COLOR } from '../core/Constants'
 
 export default class Enemy {
   constructor(scene, config) {
@@ -16,6 +15,7 @@ export default class Enemy {
     this.reward = config.reward
     this.size = config.size
     this.color = config.color
+    this.emissive = config.emissive || 0x000000
     this.flying = config.flying || false
     this.flyHeight = config.flyHeight || 0
 
@@ -28,9 +28,9 @@ export default class Enemy {
 
     // 3D objects
     this.mesh = null
-    this.hpBarGroup = null
-    this.hpBarBg = null
-    this.hpBarFg = null
+    this.hpSprite = null
+    this.hpCanvas = null
+    this.hpTexture = null
 
     this._buildMesh()
     this._buildHpBar()
@@ -39,9 +39,11 @@ export default class Enemy {
   _buildMesh() {
     // Override in subclass
     const geom = new THREE.BoxGeometry(this.size * 2, this.size * 2, this.size * 2)
-    const mat = new THREE.MeshPhongMaterial({
+    const mat = new THREE.MeshStandardMaterial({
       color: this.color,
-      flatShading: true,
+      emissive: this.emissive,
+      roughness: 0.6,
+      metalness: 0.2,
     })
     this.mesh = new THREE.Mesh(geom, mat)
     this.mesh.castShadow = true
@@ -49,23 +51,85 @@ export default class Enemy {
   }
 
   _buildHpBar() {
-    this.hpBarGroup = new THREE.Group()
+    // Create canvas-based sprite for HP bar (always faces camera)
+    this.hpCanvas = document.createElement('canvas')
+    this.hpCanvas.width = 128
+    this.hpCanvas.height = 24
 
-    // Background bar
-    const bgGeom = new THREE.PlaneGeometry(1.2, 0.15)
-    const bgMat = new THREE.MeshBasicMaterial({ color: COLOR.HP_BAR_BG, side: THREE.DoubleSide })
-    this.hpBarBg = new THREE.Mesh(bgGeom, bgMat)
-    this.hpBarGroup.add(this.hpBarBg)
+    this.hpTexture = new THREE.CanvasTexture(this.hpCanvas)
+    this.hpTexture.minFilter = THREE.LinearFilter
 
-    // Foreground bar
-    const fgGeom = new THREE.PlaneGeometry(1.18, 0.12)
-    const fgMat = new THREE.MeshBasicMaterial({ color: COLOR.HP_BAR_FG, side: THREE.DoubleSide })
-    this.hpBarFg = new THREE.Mesh(fgGeom, fgMat)
-    this.hpBarFg.position.z = 0.001
-    this.hpBarGroup.add(this.hpBarFg)
+    const spriteMat = new THREE.SpriteMaterial({
+      map: this.hpTexture,
+      transparent: true,
+      depthTest: false,
+    })
+    this.hpSprite = new THREE.Sprite(spriteMat)
+    this.hpSprite.scale.set(1.6, 0.3, 1)
+    this.hpSprite.position.y = this.size + 1.2
+    this.scene.add(this.hpSprite)
 
-    this.hpBarGroup.position.y = this.size + 1.0
-    this.scene.add(this.hpBarGroup)
+    this._drawHpBar()
+  }
+
+  _drawHpBar() {
+    const ctx = this.hpCanvas.getContext('2d')
+    const w = this.hpCanvas.width
+    const h = this.hpCanvas.height
+    const ratio = Math.max(0, this.hp / this.maxHp)
+
+    // Clear
+    ctx.clearRect(0, 0, w, h)
+
+    // Background with rounded rect
+    ctx.fillStyle = '#111111'
+    this._roundRect(ctx, 2, 2, w - 4, h - 4, 4)
+    ctx.fill()
+
+    // Border
+    ctx.strokeStyle = '#333333'
+    ctx.lineWidth = 1
+    this._roundRect(ctx, 2, 2, w - 4, h - 4, 4)
+    ctx.stroke()
+
+    // HP fill
+    if (ratio > 0) {
+      const fillW = Math.max(0, (w - 8) * ratio)
+      let fillColor
+      if (ratio > 0.6) {
+        fillColor = '#33dd55'
+      } else if (ratio > 0.3) {
+        fillColor = '#ddaa33'
+      } else {
+        fillColor = '#dd3333'
+      }
+
+      ctx.fillStyle = fillColor
+      this._roundRect(ctx, 4, 4, fillW, h - 8, 3)
+      ctx.fill()
+
+      // Highlight on top half of fill
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)'
+      this._roundRect(ctx, 4, 4, fillW, (h - 8) / 2, 3)
+      ctx.fill()
+    }
+
+    this.hpTexture.needsUpdate = true
+  }
+
+  _roundRect(ctx, x, y, w, h, r) {
+    r = Math.min(r, w / 2, h / 2)
+    ctx.beginPath()
+    ctx.moveTo(x + r, y)
+    ctx.lineTo(x + w - r, y)
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r)
+    ctx.lineTo(x + w, y + h - r)
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h)
+    ctx.lineTo(x + r, y + h)
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r)
+    ctx.lineTo(x, y + r)
+    ctx.quadraticCurveTo(x, y, x + r, y)
+    ctx.closePath()
   }
 
   update(dt, path) {
@@ -105,30 +169,14 @@ export default class Enemy {
       )
     }
 
-    // Update HP bar position
-    this.hpBarGroup.position.x = this.mesh.position.x
-    this.hpBarGroup.position.y = (this.flying ? this.flyHeight : 0) + this.size + 1.0
-    this.hpBarGroup.position.z = this.mesh.position.z
-    this.hpBarGroup.lookAt(
-      this.hpBarGroup.position.x,
-      this.hpBarGroup.position.y + 10,
-      this.hpBarGroup.position.z + 10
-    )
-    // Make HP bar face camera (billboard) - we just rotate it to be visible
-
-    this._updateHpBar()
+    // Update HP sprite position (sprite automatically faces camera)
+    this.hpSprite.position.x = this.mesh.position.x
+    this.hpSprite.position.z = this.mesh.position.z
+    this.hpSprite.position.y = (this.flying ? this.flyHeight : 0) + this.size + 1.2
   }
 
   _updateHpBar() {
-    const ratio = Math.max(0, this.hp / this.maxHp)
-    this.hpBarFg.scale.x = Math.max(0.01, ratio)
-    this.hpBarFg.position.x = -(1.18 * (1 - ratio)) / 2
-
-    if (ratio < 0.3) {
-      this.hpBarFg.material.color.setHex(COLOR.HP_BAR_LOW)
-    } else {
-      this.hpBarFg.material.color.setHex(COLOR.HP_BAR_FG)
-    }
+    this._drawHpBar()
   }
 
   takeDamage(amount) {
@@ -137,6 +185,7 @@ export default class Enemy {
       this.hp = 0
       this.isDead = true
     }
+    this._updateHpBar()
   }
 
   applySlow(factor, duration) {
@@ -159,12 +208,10 @@ export default class Enemy {
         if (this.mesh.material) this.mesh.material.dispose()
       }
     }
-    if (this.hpBarGroup) {
-      this.scene.remove(this.hpBarGroup)
-      this.hpBarGroup.traverse(child => {
-        if (child.geometry) child.geometry.dispose()
-        if (child.material) child.material.dispose()
-      })
+    if (this.hpSprite) {
+      this.scene.remove(this.hpSprite)
+      if (this.hpTexture) this.hpTexture.dispose()
+      if (this.hpSprite.material) this.hpSprite.material.dispose()
     }
   }
 }

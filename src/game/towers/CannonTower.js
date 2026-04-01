@@ -13,31 +13,73 @@ export default class CannonTower extends Tower {
     const pos = this._getWorldPos()
     const stats = TOWER_STATS[TOWER.TYPES.CANNON]
 
-    // Base platform
+    // Base platform - stone colored with PBR material
     const baseGeom = new THREE.CylinderGeometry(0.7, 0.9, 0.3, 8)
-    const baseMat = new THREE.MeshPhongMaterial({ color: 0x8b7355 })
+    const baseMat = new THREE.MeshStandardMaterial({
+      color: 0x555550,
+      roughness: 0.7,
+      metalness: 0.15
+    })
     const base = new THREE.Mesh(baseGeom, baseMat)
     base.position.y = 0.15
     base.castShadow = true
     group.add(base)
+
+    // Glow ring at base
+    const glowRingGeom = new THREE.TorusGeometry(0.82, 0.04, 8, 32)
+    const glowRingMat = new THREE.MeshBasicMaterial({
+      color: 0xff8833,
+      transparent: true,
+      opacity: 0.6
+    })
+    const glowRing = new THREE.Mesh(glowRingGeom, glowRingMat)
+    glowRing.rotation.x = Math.PI / 2
+    glowRing.position.y = 0.32
+    group.add(glowRing)
+    this.glowRing = glowRing
 
     // Cannon body (rotating part)
     const turretGroup = new THREE.Group()
     turretGroup.position.y = 0.5
 
     const bodyGeom = new THREE.SphereGeometry(0.45, 8, 6)
-    const bodyMat = new THREE.MeshPhongMaterial({ color: stats.color[0], flatShading: true })
+    const bodyMat = new THREE.MeshStandardMaterial({
+      color: stats.color[0],
+      emissive: stats.emissive[0],
+      roughness: 0.4,
+      metalness: 0.4,
+      flatShading: true
+    })
     const body = new THREE.Mesh(bodyGeom, bodyMat)
     body.castShadow = true
+    body.userData.isBody = true
     turretGroup.add(body)
 
-    // Barrel
+    // Barrel - dark metal with PBR
     const barrelGeom = new THREE.CylinderGeometry(0.12, 0.15, 0.8, 8)
     barrelGeom.rotateX(Math.PI / 2)
-    const barrelMat = new THREE.MeshPhongMaterial({ color: 0x444444 })
+    const barrelMat = new THREE.MeshStandardMaterial({
+      color: 0x333338,
+      roughness: 0.3,
+      metalness: 0.8
+    })
     const barrel = new THREE.Mesh(barrelGeom, barrelMat)
     barrel.position.z = -0.5
+    barrel.castShadow = true
     turretGroup.add(barrel)
+
+    // Muzzle brake detail at end of barrel
+    const muzzleGeom = new THREE.TorusGeometry(0.14, 0.03, 6, 12)
+    muzzleGeom.rotateX(Math.PI / 2)
+    const muzzleMat = new THREE.MeshStandardMaterial({
+      color: 0x333338,
+      roughness: 0.3,
+      metalness: 0.8
+    })
+    const muzzle = new THREE.Mesh(muzzleGeom, muzzleMat)
+    muzzle.position.z = -0.9
+    muzzle.castShadow = true
+    turretGroup.add(muzzle)
 
     group.add(turretGroup)
     group.position.copy(pos)
@@ -63,12 +105,19 @@ export default class CannonTower extends Tower {
   _updateVisual() {
     const stats = TOWER_STATS[TOWER.TYPES.CANNON]
     const color = stats.color[this.level]
+    const emissive = stats.emissive[this.level]
     if (this.turretGroup) {
       this.turretGroup.traverse(child => {
         if (child.isMesh && child.material && child.material.color) {
           const c = child.material.color.getHex()
           if (c === stats.color[0] || c === stats.color[1] || c === stats.color[2]) {
             child.material.color.setHex(color)
+          }
+        }
+        if (child.isMesh && child.userData.isBody && child.material && child.material.emissive) {
+          const e = child.material.emissive.getHex()
+          if (e === stats.emissive[0] || e === stats.emissive[1] || e === stats.emissive[2]) {
+            child.material.emissive.setHex(emissive)
           }
         }
       })

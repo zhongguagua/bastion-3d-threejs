@@ -22,19 +22,34 @@ export default class FlyingEnemy extends Enemy {
 
     // Body
     const bodyGeom = new THREE.SphereGeometry(0.25, 6, 4)
-    const bodyMat = new THREE.MeshPhongMaterial({ color: this.color, flatShading: true })
+    const bodyMat = new THREE.MeshStandardMaterial({
+      color: this.color,
+      emissive: this.emissive || 0x0a2233,
+      roughness: 0.4,
+      metalness: 0.3,
+    })
     const body = new THREE.Mesh(bodyGeom, bodyMat)
     body.position.y = 0.25
     body.castShadow = true
     group.add(body)
 
+    // Core glow inside body
+    const coreGeom = new THREE.SphereGeometry(0.1, 6, 4)
+    const coreMat = new THREE.MeshBasicMaterial({ color: 0x88eeff })
+    const core = new THREE.Mesh(coreGeom, coreMat)
+    core.position.y = 0.25
+    group.add(core)
+
     // Wings
     const wingGeom = new THREE.PlaneGeometry(1.0, 0.3)
-    const wingMat = new THREE.MeshPhongMaterial({
+    const wingMat = new THREE.MeshStandardMaterial({
       color: 0x44bbdd,
+      emissive: 0x0a2233,
       side: THREE.DoubleSide,
       transparent: true,
       opacity: 0.7,
+      roughness: 0.3,
+      metalness: 0.4,
     })
     const leftWing = new THREE.Mesh(wingGeom, wingMat)
     leftWing.position.set(-0.4, 0.3, 0)

@@ -311,6 +311,9 @@ export default class GameEngine {
   }
 
   _update(dt) {
+    // Update map animations
+    this.gameMap.update(dt)
+
     // Spawn enemies from wave manager
     this.waveManager.update(dt)
 

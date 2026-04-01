@@ -196,47 +196,60 @@ export default {
 }
 
 .pause-overlay {
-  background: rgba(0, 0, 20, 0.6);
-  backdrop-filter: blur(4px);
+  background: rgba(2, 5, 15, 0.9);
+  backdrop-filter: blur(16px);
 }
 
 .overlay-content {
   text-align: center;
   color: #fff;
+  padding: 48px;
+  background: rgba(8, 12, 30, 0.6);
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.08), inset 0 0 40px rgba(0, 240, 255, 0.03);
 }
 
 .overlay-content h2 {
-  font-size: 36px;
+  font-size: 42px;
   color: #44ddff;
   margin: 0 0 16px;
+  letter-spacing: 8px;
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.6), 0 0 40px rgba(0, 240, 255, 0.3);
 }
 
 .overlay-content p {
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
   margin: 0 0 20px;
+  letter-spacing: 2px;
 }
 
 .btn-resume {
   padding: 12px 48px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
-  color: #fff;
-  background: linear-gradient(135deg, #2288ff, #00ccff);
-  border: none;
-  border-radius: 25px;
+  color: #00f0ff;
+  background: transparent;
+  border: 1px solid rgba(0, 240, 255, 0.5);
+  border-radius: 4px;
   cursor: pointer;
-  letter-spacing: 2px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
 }
 
 .btn-resume:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 150, 255, 0.5);
+  background: rgba(0, 240, 255, 0.1);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.4), inset 0 0 20px rgba(0, 240, 255, 0.1);
+  border-color: rgba(0, 240, 255, 0.8);
+  color: #fff;
 }
 
 .hint {
-  margin-top: 12px;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.35);
+  margin-top: 16px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 3px;
 }
 </style>
