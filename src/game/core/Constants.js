@@ -18,9 +18,9 @@ export const GRID = {
 }
 
 export const CAMERA = {
-  INITIAL_POS: { x: 20, y: 35, z: 30 },
-  LOOK_AT: { x: 20, y: 0, z: 14 },
-  FOV: 50,
+  INITIAL_POS: { x: 20, y: 22, z: 38 },
+  LOOK_AT: { x: 20, y: 0, z: 12 },
+  FOV: 55,
   NEAR: 0.1,
   FAR: 200,
   MIN_DISTANCE: 20,
