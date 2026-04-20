@@ -3,24 +3,24 @@
     <div class="hud-top">
       <div class="hud-item gold">
         <span class="hud-icon">&#9733;</span>
-        <span class="hud-label">金币</span>
+        <span class="hud-label">Gold</span>
         <span class="hud-value">{{ gold }}</span>
       </div>
       <div class="hud-item lives">
         <span class="hud-icon">&#9829;</span>
-        <span class="hud-label">生命</span>
+        <span class="hud-label">Lives</span>
         <span class="hud-value">{{ lives }}</span>
       </div>
       <div class="hud-item wave">
-        <span class="hud-label">波次</span>
+        <span class="hud-label">Wave</span>
         <span class="hud-value">{{ wave.current + 1 }} / {{ wave.total }}</span>
       </div>
       <div class="hud-item score-display">
-        <span class="hud-label">分数</span>
+        <span class="hud-label">Score</span>
         <span class="hud-value score-val">{{ score.toLocaleString() }}</span>
       </div>
       <div class="hud-item enemies">
-        <span class="hud-label">剩余敌人</span>
+        <span class="hud-label">Enemies</span>
         <span class="hud-value">{{ wave.enemiesRemaining }}</span>
       </div>
       <button
@@ -28,7 +28,7 @@
         v-if="wave.phase === 'waiting' || wave.phase === 'complete'"
         @click="$emit('startWave')"
       >
-        下一波 &rarr;
+        Next Wave &rarr;
       </button>
     </div>
     <button class="btn-pause" @click="$emit('pause')">

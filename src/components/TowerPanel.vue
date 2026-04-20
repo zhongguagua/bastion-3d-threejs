@@ -23,21 +23,21 @@
       </div>
       <div class="sel-stats">
         <div class="stat-row">
-          <span class="stat-label">伤害</span>
+          <span class="stat-label">Damage</span>
           <div class="stat-bar-wrap">
             <div class="stat-bar stat-bar-damage" :style="{ width: getDamagePercent() + '%' }"></div>
           </div>
           <span class="stat-value">{{ getCurrentStat('damage') }}</span>
         </div>
         <div class="stat-row">
-          <span class="stat-label">射程</span>
+          <span class="stat-label">Range</span>
           <div class="stat-bar-wrap">
             <div class="stat-bar stat-bar-range" :style="{ width: getRangePercent() + '%' }"></div>
           </div>
           <span class="stat-value">{{ getCurrentStat('range').toFixed(1) }}</span>
         </div>
         <div class="stat-row">
-          <span class="stat-label">攻速</span>
+          <span class="stat-label">Speed</span>
           <div class="stat-bar-wrap">
             <div class="stat-bar stat-bar-speed" :style="{ width: getFireRatePercent() + '%' }"></div>
           </div>
@@ -49,10 +49,10 @@
           v-if="selectedTower.level < 2"
           :class="{ disabled: gold < getUpgradeCost() }"
           @click="gold >= getUpgradeCost() && $emit('upgrade')">
-          升级 (&#9733;{{ getUpgradeCost() }})
+          Upgrade (&#9733;{{ getUpgradeCost() }})
         </button>
         <button class="btn-sell" @click="$emit('sell')">
-          出售 (&#9733;{{ getSellValue() }})
+          Sell (&#9733;{{ getSellValue() }})
         </button>
       </div>
     </div>

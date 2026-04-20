@@ -50,8 +50,8 @@ export const TOWER = {
 
 export const TOWER_STATS = {
   [TOWER.TYPES.ARROW]: {
-    name: '箭塔',
-    description: '快速攻击，单体伤害',
+    name: 'Arrow Tower',
+    description: 'Fast attack, single target',
     cost: [50, 80, 120],
     damage: [8, 15, 25],
     range: [5, 6, 7],
@@ -61,8 +61,8 @@ export const TOWER_STATS = {
     projectileSpeed: 25,
   },
   [TOWER.TYPES.CANNON]: {
-    name: '炮塔',
-    description: '范围伤害，攻速慢',
+    name: 'Cannon Tower',
+    description: 'Splash damage, slow fire rate',
     cost: [100, 150, 220],
     damage: [25, 45, 70],
     range: [5, 5.5, 6],
@@ -73,8 +73,8 @@ export const TOWER_STATS = {
     splashRadius: [2, 2.5, 3],
   },
   [TOWER.TYPES.ICE]: {
-    name: '冰塔',
-    description: '减速敌人',
+    name: 'Ice Tower',
+    description: 'Slows enemies',
     cost: [75, 120, 180],
     damage: [5, 8, 12],
     range: [5, 6, 7],
@@ -86,8 +86,8 @@ export const TOWER_STATS = {
     slowDuration: [2, 2.5, 3],
   },
   [TOWER.TYPES.LIGHTNING]: {
-    name: '电塔',
-    description: '链式闪电攻击多个目标',
+    name: 'Lightning Tower',
+    description: 'Chain lightning hits multiple targets',
     cost: [125, 200, 300],
     damage: [15, 25, 40],
     range: [6, 6.5, 7],
@@ -98,8 +98,8 @@ export const TOWER_STATS = {
     chainDamageFactor: 0.7,
   },
   [TOWER.TYPES.SNIPER]: {
-    name: '狙击塔',
-    description: '超远射程，高单体伤害',
+    name: 'Sniper Tower',
+    description: 'Long range, high single-target damage',
     cost: [150, 230, 350],
     damage: [50, 90, 150],
     range: [10, 12, 14],
@@ -122,7 +122,7 @@ export const ENEMY = {
 
 export const ENEMY_STATS = {
   [ENEMY.TYPES.NORMAL]: {
-    name: '普通兵',
+    name: 'Soldier',
     baseHp: 80,
     speed: 3,
     reward: 10,
@@ -132,7 +132,7 @@ export const ENEMY_STATS = {
     flying: false,
   },
   [ENEMY.TYPES.FAST]: {
-    name: '快速兵',
+    name: 'Scout',
     baseHp: 40,
     speed: 6,
     reward: 12,
@@ -142,7 +142,7 @@ export const ENEMY_STATS = {
     flying: false,
   },
   [ENEMY.TYPES.TANK]: {
-    name: '重装兵',
+    name: 'Tank',
     baseHp: 250,
     speed: 1.8,
     reward: 25,
@@ -152,7 +152,7 @@ export const ENEMY_STATS = {
     flying: false,
   },
   [ENEMY.TYPES.FLYING]: {
-    name: '飞行兵',
+    name: 'Flyer',
     baseHp: 60,
     speed: 4,
     reward: 15,
@@ -163,7 +163,7 @@ export const ENEMY_STATS = {
     flyHeight: 2,
   },
   [ENEMY.TYPES.BOSS]: {
-    name: 'BOSS',
+    name: 'Boss',
     baseHp: 1000,
     speed: 1.5,
     reward: 100,

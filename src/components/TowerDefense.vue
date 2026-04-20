@@ -34,10 +34,10 @@
     <!-- Pause Overlay -->
     <div v-if="gameState === 'paused'" class="overlay pause-overlay">
       <div class="overlay-content">
-        <h2>游戏暂停</h2>
-        <p>当前波次：第 {{ waveInfo.current + 1 }} 波</p>
-        <button class="btn-resume" @click="togglePause">继续游戏</button>
-        <p class="hint">按 ESC 继续</p>
+        <h2>Game Paused</h2>
+        <p>Current Wave: {{ waveInfo.current + 1 }}</p>
+        <button class="btn-resume" @click="togglePause">Resume</button>
+        <p class="hint">Press ESC to resume</p>
       </div>
     </div>
 

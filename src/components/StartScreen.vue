@@ -8,14 +8,14 @@
       <div class="title-group">
         <div class="title-badge">TOWER DEFENSE</div>
         <h1 class="game-title">
-          <span class="title-line">城堡守卫战</span>
+          <span class="title-line">Castle Defense</span>
         </h1>
         <p class="game-subtitle">CASTLE DEFENSE</p>
       </div>
 
       <div class="game-desc">
-        <p>建造防御塔，抵御敌人入侵！</p>
-        <p>合理布局，升级塔防，守护你的城堡</p>
+        <p>Build defense towers and repel the invasion!</p>
+        <p>Strategize, upgrade, and defend your castle</p>
       </div>
 
       <div class="tower-preview">
@@ -31,20 +31,20 @@
       <div class="controls-info">
         <div class="control-row">
           <span class="key"><span class="key-inner">LMB</span></span>
-          <span class="label">选择/放置塔</span>
+          <span class="label">Select / Place Tower</span>
         </div>
         <div class="control-row">
           <span class="key"><span class="key-inner">RMB</span></span>
-          <span class="label">取消放置</span>
+          <span class="label">Cancel Placement</span>
         </div>
         <div class="control-row">
           <span class="key"><span class="key-inner">ESC</span></span>
-          <span class="label">暂停游戏</span>
+          <span class="label">Pause Game</span>
         </div>
       </div>
 
       <button ref="startBtn" class="btn-start" :class="{ clicked: btnClicked }" @click="handleStart">
-        <span class="btn-text">开始游戏</span>
+        <span class="btn-text">Start Game</span>
         <span class="btn-glow"></span>
       </button>
     </div>
@@ -58,11 +58,11 @@ export default {
     return {
       btnClicked: false,
       towers: [
-        { icon: '🏹', name: '箭塔', desc: '快速攻击' },
-        { icon: '💣', name: '炮塔', desc: '范围伤害' },
-        { icon: '❄', name: '冰塔', desc: '减速敌人' },
-        { icon: '⚡', name: '电塔', desc: '链式攻击' },
-        { icon: '🎯', name: '狙击塔', desc: '远程高伤' },
+        { icon: '🏹', name: 'Arrow', desc: 'Fast Attack' },
+        { icon: '💣', name: 'Cannon', desc: 'Splash DMG' },
+        { icon: '❄', name: 'Ice', desc: 'Slow' },
+        { icon: '⚡', name: 'Lightning', desc: 'Chain' },
+        { icon: '🎯', name: 'Sniper', desc: 'Long Range' },
       ],
     }
   },

@@ -8,27 +8,27 @@
       <div class="content-glow-top"></div>
 
       <h2 class="gameover-title" :class="{ victory: victory }">
-        {{ victory ? '胜利!' : '城堡沦陷' }}
+        {{ victory ? 'Victory!' : 'Castle Fallen' }}
       </h2>
 
       <div class="final-score">
-        <span class="final-label">最终得分</span>
+        <span class="final-label">Final Score</span>
         <span class="final-value" :class="{ victory: victory }">{{ score.toLocaleString() }}</span>
       </div>
 
       <div class="stats">
         <div class="stat-item">
-          <span class="stat-label">通过波次</span>
+          <span class="stat-label">Waves Cleared</span>
           <span class="stat-value" :class="{ victory: victory }">{{ wave + 1 }}</span>
         </div>
         <div class="stat-item">
-          <span class="stat-label">总波次</span>
+          <span class="stat-label">Total Waves</span>
           <span class="stat-value" :class="{ victory: victory }">20</span>
         </div>
       </div>
 
       <button class="btn-restart" :class="{ victory: victory }" @click="$emit('restart')">
-        <span class="btn-text">再来一局</span>
+        <span class="btn-text">Play Again</span>
         <span class="btn-glow"></span>
       </button>
     </div>
